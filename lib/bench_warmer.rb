@@ -6,8 +6,8 @@ module BenchWarmer
   class Url
     include Benchmark
 
-    def self.run(endpoint: "", run_times: 10)
-      raise ArgumentError if endpoint.empty?
+    def self.run(endpoint:, run_times: 10)
+      endpoint = "http://#{endpoint}" unless endpoint.starts_with? 'http'
       label_width = 10
       benches = []
       Benchmark.benchmark(CAPTION, label_width, FORMAT, "\nTotal:", "Average:") do |bench|
