@@ -7,7 +7,7 @@ module BenchWarmer
     include Benchmark
 
     def self.run(endpoint:, run_times: 10)
-      endpoint = "http://#{endpoint}" unless endpoint.starts_with? 'http'
+      endpoint = form_url(endpoint)
       label_width = 10
       benches = []
       Benchmark.benchmark(CAPTION, label_width, FORMAT, "\nTotal:", "Average:") do |bench|
@@ -21,6 +21,14 @@ module BenchWarmer
           puts "Error: Status #{response.code} for #{endpoint}"
         end
         [benches.reduce(:+), (benches.reduce(:+) / benches.size)]
+      end
+    end
+
+    def self.form_url(user_url)
+      if user_url.start_with? 'http'
+        user_url
+      else
+        "http://#{user_url}"
       end
     end
   end
